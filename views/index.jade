@@ -1,0 +1,59 @@
+doctype html
+html.
+  <head>
+    <title>Dropzone Express.js File upload</title>
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="static/dropzone/downloads/css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/ui.css">
+    <script type="text/javascript" src="static/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="static/javascripts/uuid.js"></script>
+    <script type="text/javascript" src="static/javascripts/options.js"></script>
+    <script type="text/javascript" src="static/dropzone/downloads/dropzone.min.js"></script>
+    <script type="text/javascript" src="static/javascripts/global.js"></script>
+  </head>
+  <body>
+    <h1>pdfConverter - v0.0.1</h1>
+    <hr/>
+
+      <div id="dropzone">
+        <form action="" class="dropzone" id="my-dropzone">
+      </form>
+
+      </div>
+      <!-- Also checkout BS example : http://www.dropzonejs.com/bootstrap.html -->
+    </div>
+    <div id="options">
+        <br>
+        <p>
+          File name:&nbsp; <input type="text" id="filename" name="filename" disabled>
+          &nbsp; &nbsp;
+          <input type="checkbox" id="merge" name="merge" onclick="filename_hand()" checked=true disabled>Merge files
+        </p>
+        <p>
+
+          <h3>&nbsp;</h3>p
+          Page size: &nbsp;
+          <button id="a4pageSize" onclick>A4</button>
+          <button id="custompageSize" onclick>Custom</button>
+          <input type="text" id="pageSize" name="pagesize" value="a4">
+        </p>
+        <p>
+
+          <h3>&nbsp;</h3>
+          Margins: &nbsp;
+          <button id="defaultMargins"  onclick>2cm</button>
+          <button id="customMargins" onclick>Custom</button>
+          <input type="text" id="margins" name="margins" value="2"> cm
+
+        </p>
+        <p>
+          <h3>&nbsp;</h3>
+          <h3> Positioning options </h3>
+            <textarea id="optionsm" rows="4" cols="50">[[0,-1],[1,-1],[2,-1]]</textarea>
+
+        </p>
+        <p><button id="covert" onclick="begin_converting()">Convert</button></p>
+        <iframe id="dframe" width="1" height="1" frameborder="0" src=""></iframe>
+    </div>
+
+</body>

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+
+  link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
+  link(rel='stylesheet', type='text/css', href='node_modules/dropzone/downloads/css/dropzone.css')
+
+  script(type='text/javascript', src='node_modules/jquery/dist/jquery.min.js')
+  script(type='text/javascript', src='node_modules/dropzone/downloads/dropzone.min.js')
+  script(type='text/javascript', src='node_modules/public/javascripts/global.js')
+
+
+  h1 File uploader
+  hr
+  #simpleUpload
+    .meter
+      span.roller
+
+    #dropzone
+      form#my-dropzone.dropzone(action='/upload')
