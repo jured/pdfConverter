@@ -2,6 +2,10 @@
 var debug = require('debug')('pdf-converter');
 var app = require('../app');
 
+
+
+// Production server settings
+/*
 var APP_PRIVATE_IP_ADDRESS = '127.0.0.1'
 
 app.set('port', process.env.PORT || 3001);
@@ -11,4 +15,13 @@ var server = app.listen(app.get('port'), APP_PRIVATE_IP_ADDRESS , function() {
     console.log(('Express server listening on port ' + APP_PRIVATE_IP_ADDRESS + ':'+ server.address().port));
 });
 
+*/
 
+// Develop setings
+
+app.set('port', process.env.PORT || 3001);
+
+var server = app.listen(app.get('port'), function() {
+    debug('Express server listening on port ' + server.address().port);
+    console.log(('Express server listening on port ' + ':'+ server.address().port));
+});
