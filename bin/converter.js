@@ -1,6 +1,12 @@
+/*
+ * @params: folder: folder which contains files to bo converted
+ *        resultDir: unique directory where result file will be put
+ *        options: json object with options
+ *        ret: callback(err, resultDir)
+ */
 
+var Converter = function(id, uploadDir, resultDir, options, callback) {
 
-var Converter = function(folder, options, ret) {
 
   var fs = require('fs'),
       async = require('async'),
@@ -11,16 +17,25 @@ var Converter = function(folder, options, ret) {
       jpg2pdf = require('./jpg2pdf.js'),
       PDF = require('./mergePDFfiles.js');
 
+  var folder = uploadDir + '/' + id;
+
+
   var get_filenames = function(f) {
     var fn;
     try {
       fn = fs.readdirSync(f);
     } catch (err) {
-      console.log('ERROR Coverter:', err);
-      //add error handling
+      console.error('ERROR Coverter:', err);
+
+      // This error is critical, fail convertionb
+      process.nextTick(function() {
+        callback('Error reading filenames from folder: ' +f, null);
+      });
+
     }
     return fn;
   };
+
 
   var remove_extension = function(filename) {
     var i = filename.lastIndexOf('.');
@@ -28,9 +43,10 @@ var Converter = function(folder, options, ret) {
     else return filename.substr(0, i);
   };
 
-  var create_pdf_files = function() {
-    /* create pdf files acording to options */
 
+  var create_pdf_files = function() {
+
+    /* merge pdf files acording to options */
     var dir = folder + '/tmp',
         filenames = get_filenames(dir);
 
@@ -38,7 +54,8 @@ var Converter = function(folder, options, ret) {
 
     pageSize = options.pageSize;
     // TODO: check in better way than filenames.length
-    if (filenames.length > 3 && options.merge === false) { // Convert files to pdf zip them and return
+    if (false && filenames.length > 3 && options.merge === false) { // Convert files to pdf zip them and return
+      // At the moment disabled, there is problem whith ziping files
 
       // Create pdf files
       for(var i = 0; i < filenames.length; i++) {
@@ -59,48 +76,29 @@ var Converter = function(folder, options, ret) {
         zip.writeToFileSync(folder+'/result/'+outfilename);
       });
 
-      // Return callback
-      /*
-      process.nextTick(function() {
-        ret(folder + '/result', false);
-      });
-      //return folder + '/result';
-       */
     } else {
 
       outfilename = options.filename || filenames[0].substring(2,filenames[0].length);
 
-      pdf = new PDF(folder+'/result/'+outfilename, pageSize);
+      pdf = new PDF(resultDir + '/' + id + '/' + outfilename, pageSize);
       pdf.setAppendMatrix(options.matrix);
 
       for(var i = 0; i < filenames.length; i++) {
         //console.log("appending pdf:", filenames[i]);
-
         pdf.appendPages(dir+'/'+filenames[i]);
       }
 
-      // Test:
-      // console.log("appending pdf:", filenames[1]);
-      // pdf.appendPages(dir+'/'+filenames[0]);
-      // console.log("appending pdf:", filenames[0]);
-      // pdf.appendPages(dir+'/'+filenames[0]);
-
       pdf.end();
-      /*
-      // Return file
-      process.nextTick(function() {
-        ret(folder+'/result/'+outfilename, true);
-      });
-      //return folder+'/result/'+outfilename;
-      */
+
     }
 
     process.nextTick(function() {
-      ret(folder+'/result/'+outfilename);
+      callback(null, resultDir + '/' + id + '/' + outfilename);
     });
 
 
   };
+
 
   var convert_to_pdf_files = function() {
 
@@ -109,21 +107,29 @@ var Converter = function(folder, options, ret) {
     /* create tmp and result direcotory to save created pdfs */
     try {
       fs.mkdirSync(folder + '/tmp');
-      fs.mkdirSync(folder + '/result');
+      fs.mkdirSync(resultDir + '/' + id);
     } catch(e) {
-      if ( e.code != 'EEXIST' ) throw e;
+
+      if ( e.code != 'EEXIST' ) {
+        throw e;
+      } else {
+        process.nextTick(function() {
+          callback('Error creating tmp and/or reslut folder (id): ' + id, null);
+        });
+      }
+
     }
 
     /* convert files to pdf */
     async.each(filenames,
-               function(fname, callback) { // Called on every filename
+               function(fname, cb) { // Called on every filename
 
                  var f = folder+'/' + fname,
                      o = folder+ '/tmp/' + remove_extension(fname) + '.pdf',
                      type = mime.lookup(f);
 
                  if (type === 'image/jpeg') { // Handle jpeg images
-                   jpg2pdf(f, o);
+                   jpg2pdf(f, o); // TODO: Implement error checking
                  } else if (type === 'application/pdf') { // File is already pdf, just move it to tmp
                    try {
                      // mv(f,o, {mkdirp: true}), function(err))
@@ -131,14 +137,24 @@ var Converter = function(folder, options, ret) {
 
                    } catch (err) {
                      console.log('converter.js: cp:', err);
+                     process.nextTick(function() {
+                       callback('Error creating tmp and/or reslut folder (id): ' + id, null);
+                     });
                    }
                  } else {
                    // TODO: add other format handling
+
                  }
-                 callback();
+                 cb();
                },
-               function(err) { //called when everything is finished
-                 if (err) console.log('converter.js',err);
+               function(err) { // Called when everything is finished
+                 if (err) {
+                   console.error('converter.js',err);
+                   process.nextTick(function() {
+                     callback('Error moving converted file: ' + f +' | '+o, null);
+                   });
+
+                 }
 
                  // 2. Merge pdfs acording to settings
                  create_pdf_files();
@@ -146,18 +162,15 @@ var Converter = function(folder, options, ret) {
 
   };
 
+
   // 1. Converte everything to pdf
   convert_to_pdf_files();
 
   // 2. Merge pdfs acording to settings
-  // ...insite convert_to_pdf_files();
+  // ...inside convert_to_pdf_files();
 
   // 3. Signal that result is ready
+  // ...inside create_pdf_files();
 
 };
 module.exports = Converter;
-/*
- module.exports = function(folder, options, callback) {
- return new Converter(folder, options, callback);
- };
- */
