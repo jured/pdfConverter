@@ -21,6 +21,7 @@ var uploader = require('blueimp-file-upload-expressjs')(uploader_options),
     path = require('path'),
     EasyZip = require('easy-zip'),
     mime = require('mime'),
+    rimraf = require('rimraf'),
     converter = require('../bin/converter');
 
 module.exports = function(router) {
@@ -119,28 +120,49 @@ module.exports = function(router) {
         pagesetup = JSON.parse(req.param("options"));
 
     /* convert files to pdf */
-    var result = converter(id, options.uploadDir, options.resultDir, pagesetup, function(err, result){
+    converter(id, options.uploadDir, options.resultDir, pagesetup, function(err, result){
 
-      console.log('result:', result);
-      res.contentType(mime.lookup(result));
-      fs.readFile(result, function(err, data) {
-        res.send(data);
-      });
-
-
-     /*
       // Respond with link to file or false if conversion was not succesful
-      // TODO
+
       if (err) {
         res.send("false");
       } else {
-        res.send("TODO");
+        res.send('/download/'+id);
       }
-      */
+
+      // clean up working files
+      rimraf(options.uploadDir + '/' + id, function (err) {
+        console.error(err);
+      });
+
     });
 
 
 
+
+  });
+
+
+  // Handles request for file download
+  router.get('/download/:id', function(req, res) {
+
+    var id = req.param("id");
+
+    // Get filename
+    var fn;
+    fn = fs.readdir(options.resultDir + '/' + id, function(err, files) {
+
+      if (err) {
+        res.send("false");
+      } else {
+        var file = options.resultDir + '/' + id + '/' + files[0];
+        res.contentType(mime.lookup(file));
+        fs.readFile(file, function(err, data) {
+          res.send(data);
+        });
+      }
+
+    });
 
   });
 

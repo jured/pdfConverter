@@ -34,21 +34,23 @@ function convert() {
   var options = create_options('merge','pageSize','margins','optionsm', 'filename');
 
   // send filename and convert data to browser
-  /*
+
   $.ajax({
     url: '/convert/'+window.name.split('/')[0]+'/'+JSON.stringify(options), //+'/'+JSON.stringify(filesorder),
     type: 'GET',
     success: function(result) {
-      var self = this;
-      console.log(self.url);
       console.log(result);
-      document.location.assign('/convert/'+window.name.split('/')[0]+'/' +JSON.stringify(options));
-      //startDownload();
+      if (result === "false") {
+        // create error handling site
+        console.log("error converting document");
+      } else {
+        document.location.assign(result);
+      }
     }
     });
-   */
 
-   document.location.assign('/convert/'+window.name.split('/')[0]+'/' +JSON.stringify(options));
+
+   // document.location.assign('/convert/'+window.name.split('/')[0]+'/' +JSON.stringify(options));
 
 }
 
