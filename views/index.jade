@@ -4,24 +4,51 @@ html.
     <title>Dropzone Express.js File upload</title>
     <link rel="stylesheet" type="text/css" href="static/stylesheets/style.css">
     <link rel="stylesheet" type="text/css" href="static/dropzone/downloads/css/dropzone.css">
-    <link rel="stylesheet" type="text/css" href="static/stylesheets/ui.css">
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/convertForm.css">
     <script type="text/javascript" src="static/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="static/javascripts/uuid.js"></script>
     <script type="text/javascript" src="static/javascripts/options.js"></script>
     <script type="text/javascript" src="static/dropzone/downloads/dropzone.min.js"></script>
     <script type="text/javascript" src="static/javascripts/global.js"></script>
+
   </head>
   <body>
     <h1>pdfConverter - v0.0.1</h1>
-    <hr/>
 
-      <div id="dropzone">
-        <form action="" class="dropzone" id="my-dropzone">
-      </form>
-
-      </div>
-      <!-- Also checkout BS example : http://www.dropzonejs.com/bootstrap.html -->
+    <div id="dropzone">
+      <form action="" class="dropzone" id="my-dropzone"></form>
     </div>
+
+
+    <form action="convert()" method="post" class="submitForm">
+      <p>
+      Filename:&nbsp;
+      <input type="text" filename="name" value="Your file name">
+      </p>
+
+      <p>Page size:&nbsp;
+        <input type="submit" value="A3">
+        <input type="submit" value="A4">
+        <input type="submit" value="A5">
+        <input type="text" value="Custom">
+      </p>
+
+      <br>
+
+      <p>Rows:&nbsp;<input type="number" value="3" size="2" max="100" min="0">&nbsp;&nbsp;&nbsp;
+      Columns:&nbsp;<input type="number" value="2" size="2" max="100" min="0"></p>
+      <p>
+          <div id='page'></div>
+      </p>
+
+      <br>
+      <p><input type="submit" value="Convert"></p>
+
+    </form>
+
+
+
+    <!--
     <div id="options">
         <br>
         <p>
@@ -55,5 +82,5 @@ html.
         <p><button id="covert" onclick="begin_converting()">Convert</button></p>
         <iframe id="dframe" width="1" height="1" frameborder="0" src=""></iframe>
     </div>
-
+    -->
 </body>
