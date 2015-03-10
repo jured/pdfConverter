@@ -66,13 +66,21 @@ Dropzone.options.myDropzone = {
   forceFallback: false,
   addRemoveLinks: false, //TODO: at the moment it does not work, delete links on client are wrong
   createImageThumbnails: false,
+  maxFileSize: 100,
+  accept: function(file, done) {
+    var acceptedFiletypes = ["image/jpeg", "application/pdf"];
+    if ($.inArray(file.type, acceptedFiletypes) != -1) {
+      done();
+    } else {
+      done(file.type + " file type is not supported");
+    }
+  },
   url: function(file) {
     var param =  window.name.split('/');
     var num = parseInt(param[1]) + 1;
     window.name = param[0] + '/' + num;
     return '/upload/' + window.name;
   },
-
   init: function() {
 
     var self = this;
