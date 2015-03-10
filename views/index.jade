@@ -21,25 +21,27 @@ html.
 
 
     <form action="convert()" method="post" class="submitForm">
-      <p>
-      Filename:&nbsp;
-      <input type="text" filename="name" value="Your file name">
-      </p>
 
       <p>Page size:&nbsp;
-        <input type="submit" value="A3">
-        <input type="submit" value="A4">
-        <input type="submit" value="A5">
-        <input type="text" value="Custom">
+
+        <input type="radio" name="pageSize" value="A3" onclick="pageSizeHandler(this)">A3&nbsp;
+        <input type="radio" name="pageSize" value="A4" checked onclick="pageSizeHandler(this)">A4&nbsp;
+        <input type="radio" name="pageSize" value="A5" onclick="pageSizeHandler(this)">A5&nbsp;
+        <input type="radio" name="pageSize" id="custom" value="Custom"  onclick="pageSizeHandler(this)">&nbsp;
+        <input type="number" id="pageWidth" size="2" value="210" max="100000" min="1" onclick=customPageSizeHandler()>x
+        <input type="number" id="pageHeight" size="2" value="297" max="100000" min="1" onclickb=customPageSizeHandler()>&nbsp;mm
       </p>
 
       <br>
 
-      <p>Rows:&nbsp;<input type="number" value="3" size="2" max="100" min="0">&nbsp;&nbsp;&nbsp;
-      Columns:&nbsp;<input type="number" value="2" size="2" max="100" min="0"></p>
       <p>
-          <div id='page'></div>
+        Rows:&nbsp;<input type="number" value="3" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
+        &nbsp;&nbsp;&nbsp;
+        Columns:&nbsp;<input type="number" value="2" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
       </p>
+
+      <br>
+      <p><div id='page'></div></p>
 
       <br>
       <p><input type="submit" value="Convert"></p>
@@ -47,40 +49,4 @@ html.
     </form>
 
 
-
-    <!--
-    <div id="options">
-        <br>
-        <p>
-          File name:&nbsp; <input type="text" id="filename" name="filename" disabled>
-          &nbsp; &nbsp;
-          <input type="checkbox" id="merge" name="merge" onclick="filename_hand()" checked=true disabled>Merge files
-        </p>
-        <p>
-
-          <h3>&nbsp;</h3>p
-          Page size: &nbsp;
-          <button id="a4pageSize" onclick>A4</button>
-          <button id="custompageSize" onclick>Custom</button>
-          <input type="text" id="pageSize" name="pagesize" value="a4">
-        </p>
-        <p>
-
-          <h3>&nbsp;</h3>
-          Margins: &nbsp;
-          <button id="defaultMargins"  onclick>2cm</button>
-          <button id="customMargins" onclick>Custom</button>
-          <input type="text" id="margins" name="margins" value="2"> cm
-
-        </p>
-        <p>
-          <h3>&nbsp;</h3>
-          <h3> Positioning options </h3>
-            <textarea id="optionsm" rows="4" cols="50">[[0,-1],[1,-1],[2,-1]]</textarea>
-
-        </p>
-        <p><button id="covert" onclick="begin_converting()">Convert</button></p>
-        <iframe id="dframe" width="1" height="1" frameborder="0" src=""></iframe>
-    </div>
-    -->
 </body>

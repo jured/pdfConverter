@@ -10,18 +10,78 @@ $(document).ready(function() {
 
 });
 
+/* Button id's */
+var pageResHolder = "#page",
+    pageWidth = "#pageWidth",
+    pageHeight = "#pageHeight",
+    customRadio = "#custom";
+
 
 /* State variables */
 var start_convert = false,
     uploading_finished = true,
-    num = 1; // Tracks how many files were uploaded
+    num = 1, // Tracks how many files were uploaded
+    defaultFilename;
 
 
-function filename_hand() {
-  var check = $("#merge").prop("checked");
-  $("#filename").prop("disabled", !check );
+function pageRepresentation_hand() {
+  console.log("pageRrepresentation_hand() called");
+
+  // Save existing repPage
+
+
+  // Delete existing repPage
+  $(pageResHolder).empty();
+
+  // Create new table repPage
+  var array = [[0,3,5],
+               [1,4,6],
+               [2,-1,7]];
+  var pageSize = {width:300, height:400};
+
+  var matrix = createMatrix(array, pageSize, 20);
+  matrixToPage("page", matrix, pageSize, 300, function(e) {console.log(e);});
 
 };
+
+function customPageSizeHandler(e) {
+  $(customRadio).prop('checked', true);
+
+};
+
+function pageSizeHandler(e) {
+
+  /*
+  function mmTopx(width, height) {
+    return {
+      width: 0.0393700787 * width * 1/72,
+      height: 0.0393700787 * height * 1/72 //check if it is right
+    };
+  };
+
+
+  screenSizes = {
+    A3:{width: ,height:}
+
+    }
+   */
+  var pageSizes = {
+    A3: {width:297, height:420},
+    A4: {width:210, height:297},
+    A5: {width:148, height:210}
+  };
+
+  var w = $(pageWidth),
+      h = $(pageHeight);
+
+  if (e.value === 'Custom') {
+
+  } else  {
+    w.val(pageSizes[e.value].width);
+    h.val(pageSizes[e.value].height);
+  }
+
+}
 
 
 function convert() {
@@ -66,6 +126,7 @@ Dropzone.options.myDropzone = {
   forceFallback: false,
   addRemoveLinks: false, //TODO: at the moment it does not work, delete links on client are wrong
   createImageThumbnails: false,
+  maxFiles: 30,
   maxFileSize: 100,
   accept: function(file, done) {
     var acceptedFiletypes = ["image/jpeg", "application/pdf"];
@@ -120,8 +181,8 @@ Dropzone.options.myDropzone = {
     });
 
     self.on('addedfile', function(file) {
-      console.log(file);
       uploading_finished = false;
+      if(!defaultFilename) defaultFilename = file.name;
     });
 
     // Send file starts
