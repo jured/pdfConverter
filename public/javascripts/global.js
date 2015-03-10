@@ -1,5 +1,3 @@
-// DOM Ready =============================================================
-
 $(document).ready(function() {
 
 
@@ -12,13 +10,13 @@ $(document).ready(function() {
 
 });
 
-// State variables =======================================================
+
+/* State variables */
 var start_convert = false,
-    uploading_finished = true;
+    uploading_finished = true,
+    num = 1; // Tracks how many files were uploaded
 
-// Functions =============================================================
 
-/* settings buttons handlers */
 function filename_hand() {
   var check = $("#merge").prop("checked");
   $("#filename").prop("disabled", !check );
@@ -26,46 +24,32 @@ function filename_hand() {
 };
 
 
-/* ************************** */
-
-
 function convert() {
 
   var options = create_options('merge','pageSize','margins','optionsm', 'filename');
 
-  // send filename and convert data to browser
-
+  // send filename and convert data to server
   $.ajax({
-    url: '/convert/'+window.name.split('/')[0]+'/'+JSON.stringify(options), //+'/'+JSON.stringify(filesorder),
+    url: '/convert/'+window.name.split('/')[0]+'/'+JSON.stringify(options),
     type: 'GET',
     success: function(result) {
+
       console.log(result);
       if (result === "false") {
-        // create error handling site
-        console.log("error converting document");
+        // Handle convertion error
       } else {
         document.location.assign(result);
+        // Handle download error
       }
+
     }
-    });
-
-
-   // document.location.assign('/convert/'+window.name.split('/')[0]+'/' +JSON.stringify(options));
+  });
 
 }
 
-function startDownload(url) {
-  //$("#dframe").prop("src", url);
-  //window.location = url
 
-}
-
+// Called by convert button
 function begin_converting() {
-
-  /* disable everything on screen */
-  $('body').toggleClass('cover');
-
-
 
   if (uploading_finished) {
     convert();
@@ -75,7 +59,7 @@ function begin_converting() {
 
 }
 
-var num = 1;
+
 Dropzone.options.myDropzone = {
 
   autoProcessQueue: true,
@@ -89,13 +73,11 @@ Dropzone.options.myDropzone = {
     return '/upload/' + window.name;
   },
 
-  init: function() { //hook into the init() to conigure and register Dropzone
-
+  init: function() {
 
     var self = this;
 
-    // config
-
+    /*
     //enable delete and set the text
     self.options.dictRemoveFile = "Delete";
 
@@ -116,9 +98,10 @@ Dropzone.options.myDropzone = {
       };
 
     });
+    */
 
 
-    /* BIND EVENTS */
+    /* BIND DROPZONE EVENTS */
 
     /* called when all files are finished uploading */ //true??
     self.on('queuecomplete', function() {
@@ -126,30 +109,15 @@ Dropzone.options.myDropzone = {
       if (start_convert) {
         convert();
       }
-
-      //window.location.replace(); //todo!
     });
-
-
-    /*
-      $.ajax({
-        url: '/convert/' + window.name, //add filename parameter,
-        type: 'GET',
-        success: function(result) {
-          console.log(result);
-        }
-     */
-
 
     self.on('addedfile', function(file) {
       console.log(file);
       uploading_finished = false;
     });
 
-
     // Send file starts
     self.on('sending', function (file) {
-
       $('.meter').show();
     });
 
@@ -160,12 +128,10 @@ Dropzone.options.myDropzone = {
 
     self.on('queuecomplete', function() {
       console.log("uploading is complete, get result");
-      //$('<a href="uploaded/files/os_zaklad.txt" download="important.txt"></a>').click();
-
     });
 
-
     // On removig file
+    /* at the moment disabled/not implemented
     self.on('removedfile', function (file) {
 
       $.ajax({
@@ -176,7 +142,7 @@ Dropzone.options.myDropzone = {
         }
       });
      });
-
+     */
 
   }
 };
