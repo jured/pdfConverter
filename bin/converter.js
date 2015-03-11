@@ -28,9 +28,12 @@ var Converter = function(id, uploadDir, resultDir, options, callback) {
       console.error('ERROR Coverter:', err);
 
       // This error is critical, fail convertionb
+      /*
       process.nextTick(function() {
         callback('Error reading filenames from folder: ' +f, null);
       });
+      */
+      return [];
 
     }
     return fn;

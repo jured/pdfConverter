@@ -153,7 +153,7 @@ module.exports = function(router) {
     fn = fs.readdir(options.resultDir + '/' + id, function(err, files) {
 
       if (err) {
-        res.send("false");
+        res.render('downloaderror', { title: 'Error downloading' });
       } else {
         var file = options.resultDir + '/' + id + '/' + files[0];
         res.contentType(mime.lookup(file));

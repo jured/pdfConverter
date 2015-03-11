@@ -5,7 +5,16 @@ var uploadManager = require('./uploadManager')(router);
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'advanced pdf/jpg to pdf' });
+});
+
+/* GET error pages. */
+router.get('/convertingerror', function(req, res) {
+  res.render('convererror', { title: 'Error converting' });
+});
+
+router.get('/downloaderror', function(req, res) {
+  res.render('downloaderror', { title: 'Error downloading' });
 });
 
 

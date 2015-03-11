@@ -35,6 +35,13 @@
  *
  */
 
+/**
+ * @param: location:
+ *         dimensions: string('a4') or {height:_, width:_} in px
+ *         callback:
+ */
+
+
 var PDF = function(location, dimensions, callback)
 {
 
@@ -217,7 +224,7 @@ var PDF = function(location, dimensions, callback)
 	    } catch (err) {
 		console.log('PDF exec error:', err);
 	    }
-	    
+
 	    if(stdout) {
 		var buf = stdout.match(/[0-9.]+ ?x ?[0-9.]+/g)[0].replace(/\s+/g, '').split('x');
 

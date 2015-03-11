@@ -4,10 +4,8 @@ html.
     <title>Dropzone Express.js File upload</title>
     <link rel="stylesheet" type="text/css" href="static/stylesheets/style.css">
     <link rel="stylesheet" type="text/css" href="static/dropzone/downloads/css/dropzone.css">
-    <link rel="stylesheet" type="text/css" href="static/stylesheets/convertForm.css">
     <script type="text/javascript" src="static/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="static/javascripts/uuid.js"></script>
-    <script type="text/javascript" src="static/javascripts/options.js"></script>
     <script type="text/javascript" src="static/dropzone/downloads/dropzone.min.js"></script>
     <script type="text/javascript" src="static/javascripts/global.js"></script>
 
@@ -20,7 +18,8 @@ html.
     </div>
 
 
-    <form action="convert()" method="post" class="submitForm">
+
+    <form method="post" class="submitForm" onSubmit="begin_converting(); return false;">
 
       <p>Page size:&nbsp;
 
@@ -29,20 +28,59 @@ html.
         <input type="radio" name="pageSize" value="A5" onclick="pageSizeHandler(this)">A5&nbsp;
         <input type="radio" name="pageSize" id="custom" value="Custom"  onclick="pageSizeHandler(this)">&nbsp;
         <input type="number" id="pageWidth" size="2" value="210" max="100000" min="1" onclick=customPageSizeHandler()>x
-        <input type="number" id="pageHeight" size="2" value="297" max="100000" min="1" onclickb=customPageSizeHandler()>&nbsp;mm
+        <input type="number" id="pageHeight" size="2" value="297" max="100000" min="1" onclick=customPageSizeHandler()>&nbsp;mm
       </p>
+
+      <p>Margins:&nbsp;
+        <input type="number" id="margins" size="2" value="20" max="100" min="1" >&nbsp;mm
+      </p>
+
+
+      <p>Pages per page:&nbsp;
+        <input type="number" id="numOfPages" size="2" value="1" max="100" min="1" >
+      </p>
+      <p>
+
+      <!--
+      <p>
+        Rows:&nbsp;<input type="number" id="rows" value="3" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
+        &nbsp;&nbsp;&nbsp;
+        Columns:&nbsp;<input type="number" id="columns" value="2" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
+      </p>
+      -->
 
       <br>
 
       <p>
-        Rows:&nbsp;<input type="number" value="3" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
-        &nbsp;&nbsp;&nbsp;
-        Columns:&nbsp;<input type="number" value="2" size="2" max="100" min="1" onchange="pageRepresentation_hand()">
+      <table>
+        <tr>
+          <td><input type="radio" id="Layout1" name="pageLayout" value="" checked><br><img
+          <img src="/static/images/midlevertical.png" class="pageLayout">
+          </td>
+          <td><input type="radio" id="Layout2" name="pageLayout" value="" ><br><img
+          <img src="/static/images/leftVertical.png" class="pageLayout">
+          </td>
+          <td><input type="radio" id="Layout3" name="pageLayout" value="" ><br>
+          <img src="/static/images/rightVertical.png" class="pageLayout">
+          </td>
+          <td><input type="radio" id="Layout4" name="pageLayout" value="" ><br>
+          <img src="/static/images/topHorizontal.png" class="pageLayout">
+          </td>
+          <td><input type="radio" id="Layout5" name="pageLayout" value="" ><br>
+          <img <img src="/static/images/bottonHorizontal.png" class="pageLayout">
+          </td>
+          <td><input type="radio" id="Layout6" name="pageLayout" value="" ><br>
+          <img <img src="/static/images/3rows.png" class="pageLayout">
+          </td>
+        </tr>
+      </table>
+
+
       </p>
 
       <br>
-      <p><div id='page'></div></p>
 
+      <p><div id='drawDiv'></div></
       <br>
       <p><input type="submit" value="Convert"></p>
 
