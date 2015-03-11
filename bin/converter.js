@@ -56,8 +56,18 @@ var Converter = function(id, uploadDir, resultDir, options, callback) {
     var pdf, outfilename, pageSize;
 
     pageSize = options.pageSize;
-    // TODO: check in better way than filenames.length
-    if (false && filenames.length > 3 && options.merge === false) { // Convert files to pdf zip them and return
+
+    if (filenames.length == 0) {
+
+      process.nextTick(function() {
+        callback("No_uploaded_files", null);
+      });
+
+      return false;
+
+
+    } else if (false && filenames.length > 3 && options.merge === false) { // Convert files to pdf zip them and return
+      // TODO: check in better way than filenames.length
       // At the moment disabled, there is problem whith ziping files
 
       // Create pdf files

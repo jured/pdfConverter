@@ -40,6 +40,7 @@ function pageRepresentation_hand() {
 
 };
 
+
 function customPageSizeHandler(e) {
   $('#'+customRadio).prop('checked', true);
 
@@ -80,7 +81,8 @@ function pageSizeHandler(e) {
   // Set max margin, as smaller page dimension/2
   $(margins).attr('max', Number((h.val() > w.val()) ? w.val()/2:h.val()/2));
 
-}
+};
+
 
 function getPageSetup(id, pagesN) {
   // find id of selected radio button
@@ -135,6 +137,7 @@ function getPageSetup(id, pagesN) {
 
   return pageRep;
 };
+
 
 var createMatrix = function(pageSetup, pageSize, margin) {
 
@@ -198,7 +201,7 @@ function createOptions() {
 
   var options = {
     merge:true,
-    filename:'',
+    filename: defaultFilename + '.pdf'  || '',
     pageSize:pageSize,
     margin:margin,
     matrix:matrix
@@ -219,7 +222,7 @@ function convert() {
     type: 'GET',
     success: function(result) {
 
-      console.log(result);
+      console.log('convert request result:',result);
       if (result === "false") {
         // Handle convertion error
         document.location.assign('/convertingerror');

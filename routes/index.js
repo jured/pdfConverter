@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 
 /* GET error pages. */
 router.get('/convertingerror', function(req, res) {
-  res.render('convererror', { title: 'Error converting' });
+  res.render('convertererror', { title: 'Error converting' });
 });
 
 router.get('/downloaderror', function(req, res) {
