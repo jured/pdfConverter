@@ -21,3 +21,4 @@ npm install
 ``` bash
 npm start
 ```
+visit 127.0.0.1:3001 in your browser
