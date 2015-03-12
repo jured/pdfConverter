@@ -257,7 +257,7 @@ Dropzone.options.myDropzone = {
   addRemoveLinks: false, //TODO: at the moment it does not work, delete links on client are wrong
   createImageThumbnails: false,
   maxFiles: 30,
-  maxFileSize: 100,
+  maxFileSize: 19,
   accept: function(file, done) {
     var acceptedFiletypes = ["image/jpeg", "application/pdf"];
     if ($.inArray(file.type, acceptedFiletypes) != -1) {
