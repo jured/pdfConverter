@@ -8,9 +8,9 @@ bin/debug.js
 converter_options.json
 package.json~
 public/javascripts/options.js
-public/results/
+public/results/*
 public/stylesheets/convertForm.css
 public/stylesheets/overlay.css
 public/stylesheets/ui.css
-public/uploaded/
+public/uploaded/*
 routes/users.js
