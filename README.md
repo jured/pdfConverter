@@ -4,10 +4,11 @@ Convert and merge files to pdf, at the moment only pdf and jpg files are support
 
 
 ##Requied:
+``` bash
 node v0.12.0+
 npm
 pdfinfo
-  
+``` 
 
 ##How to setup:
 ``` bash
